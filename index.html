@@ -56,12 +56,13 @@
   <div class="container">
     <h2>Nouveau mot de passe</h2>
     <input type="password" id="password" placeholder="Entrez votre nouveau mot de passe" required>
-    <button onclick="updatePassword()">Valider</button>
+    <button id="submitBtn" >Valider</button>
     <div class="message" id="message"></div>
   </div>
 
   <script type="module">
     import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+    document.getElementById('submitBtn').addEventListener('click', updatePassword)
 
     // Ca craint un peu ça. Mais flemme de faire un back
     const supabaseUrl = 'https://jjpfjgrxpjybskkfsjay.supabase.co'
