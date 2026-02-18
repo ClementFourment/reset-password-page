@@ -1,71 +1,107 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <title>Email Confirmée</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Créer un nouveau mot de passe</title>
   <style>
     body {
-      margin: 0;
-      height: 100vh;
+      font-family: Arial, sans-serif;
+      background: #f0f2f5;
       display: flex;
       justify-content: center;
       align-items: center;
-      background: linear-gradient(135deg, #1e293b, #0f172a);
-      font-family: "Segoe UI", Tahoma, sans-serif;
-      color: white;
+      height: 100vh;
     }
-
-    .card {
-      background: rgba(255, 255, 255, 0.1);
-      padding: 40px 50px;
-      border-radius: 20px;
+    .container {
+      background: #fff;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      width: 300px;
+    }
+    h2 {
       text-align: center;
-      backdrop-filter: blur(10px);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-      animation: fadeIn 0.8s ease-out;
+      color: #333;
     }
-
-    .icon {
-      font-size: 60px;
-      margin-bottom: 15px;
-      animation: pop 0.5s ease-out;
+    input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      margin: 15px 0;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
     }
-
-    h1 {
-      font-size: 32px;
-      margin: 0;
-      font-weight: 700;
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #3b82f6;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
     }
-
-    p {
-      font-size: 18px;
-      margin-top: 10px;
-      opacity: 0.85;
+    button:hover {
+      background-color: #2563eb;
     }
-
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(10px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    @keyframes pop {
-      0% { transform: scale(0.2); opacity: 0; }
-      100% { transform: scale(1); opacity: 1; }
+    .message {
+      margin-top: 15px;
+      text-align: center;
+      font-size: 14px;
     }
   </style>
 </head>
-
 <body>
-  <div class="card">
-    <div class="icon">✅</div>
-    <h1>Email confirmée</h1>
-    <p>Appli : <strong>BlocBoard</strong></p>
+  <div class="container">
+    <h2>Nouveau mot de passe</h2>
+    <input type="password" id="password" placeholder="Entrez votre nouveau mot de passe" required>
+    <button onclick="updatePassword()">Valider</button>
+    <div class="message" id="message"></div>
   </div>
+
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+
+    // Ca craint un peu ça. Mais flemme de faire un back
+    const supabaseUrl = 'https://jjpfjgrxpjybskkfsjay.supabase.co'
+    const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpqcGZqZ3J4cGp5YnNra2ZzamF5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI0MzQ5OTksImV4cCI6MjA3ODAxMDk5OX0.WKhBblLPl2fsOWTC4bkomkmbtyhepowR9qVvPJFCM0Y'
+    const supabase = createClient(supabaseUrl, supabaseAnonKey)
+
+    const params = new URLSearchParams(window.location.search)
+    const accessToken = params.get('access_token')
+
+    async function updatePassword() {
+      const password = document.getElementById('password').value
+      const messageEl = document.getElementById('message')
+      messageEl.textContent = ''
+
+      if (!password) {
+        messageEl.textContent = 'Veuillez entrer un mot de passe.'
+        messageEl.style.color = 'red'
+        return
+      }
+
+      if (!accessToken) {
+        messageEl.textContent = 'Lien invalide ou expiré.'
+        messageEl.style.color = 'red'
+        return
+      }
+
+      const { error } = await supabase.auth.updateUser(accessToken, { password })
+
+      if (error) {
+        messageEl.textContent = error.message
+        messageEl.style.color = 'red'
+      } else {
+        messageEl.textContent = 'Mot de passe mis à jour avec succès !'
+        messageEl.style.color = 'green'
+        setTimeout(() => {
+          // Redirection vers votre app ou page de connexion
+          window.location.href = 'blocboard://'
+        }, 2000)
+      }
+    }
+  </script>
 </body>
 </html>
