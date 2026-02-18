@@ -69,8 +69,10 @@
     const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpqcGZqZ3J4cGp5YnNra2ZzamF5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI0MzQ5OTksImV4cCI6MjA3ODAxMDk5OX0.WKhBblLPl2fsOWTC4bkomkmbtyhepowR9qVvPJFCM0Y'
     const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
+    const hashParams = new URLSearchParams(window.location.hash.substring(1))
+    const accessToken = hashParams.get('access_token')
     const params = new URLSearchParams(window.location.search)
-    const recoveryToken = params.get('token')
+    const recoveryToken = accessToken;//params.get('token')
 
     console.log(params);
     console.log(recoveryToken);
