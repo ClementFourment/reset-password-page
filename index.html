@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Email Confirmée</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #1e293b, #0f172a);
+      font-family: "Segoe UI", Tahoma, sans-serif;
+      color: white;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 40px 50px;
+      border-radius: 20px;
+      text-align: center;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+      animation: fadeIn 0.8s ease-out;
+    }
+
+    .icon {
+      font-size: 60px;
+      margin-bottom: 15px;
+      animation: pop 0.5s ease-out;
+    }
+
+    h1 {
+      font-size: 32px;
+      margin: 0;
+      font-weight: 700;
+    }
+
+    p {
+      font-size: 18px;
+      margin-top: 10px;
+      opacity: 0.85;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes pop {
+      0% { transform: scale(0.2); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="card">
+    <div class="icon">✅</div>
+    <h1>Email confirmée</h1>
+    <p>Appli : <strong>BlocBoard</strong></p>
+  </div>
+</body>
+</html>
